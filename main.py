@@ -1,22 +1,29 @@
+import sys
+
 import pygame
 from settings import *
-
+from drawing import Drawing
 pygame.init()
 sc = pygame.display.set_mode((WIDTH, HEIGHT), pygame.DOUBLEBUF)
 clock = pygame.time.Clock()
 
 # sprites = Sprites()
 # player = Player(sprites)
-# drawing = Drawing(sc, sc_map, player, clock)
+drawing = Drawing(sc)
 # interaction = Interaction(player, sprites, drawing)
 
-# drawing.menu()
+drawing.menu()
 pygame.mouse.set_visible(False)
 # interaction.play_music()
 
 while True:
-    # player.movement()
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            sys.exit(0)
+
+
+            # player.movement()
     # drawing.background()
 
     pygame.display.flip()
-    clock.tick(FPS)
+    clock.tick(10)
