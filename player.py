@@ -3,6 +3,9 @@ import pygame
 from settings import *
 class Player:
     def __init__(self, sprites):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface((50, 50))
+        self.image.fill(YELLOW)
         self.x, self.y = player_pos
         self.speed = player_speed
         self.sprites = sprites
