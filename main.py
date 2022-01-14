@@ -7,7 +7,6 @@ from drawing import Drawing
 pygame.init()
 sc = pygame.display.set_mode((WIDTH, HEIGHT), pygame.DOUBLEBUF)
 clock = pygame.time.Clock()
-k = 1
 
 # sprites = Sprites()
 player = Player(sprites)
