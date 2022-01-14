@@ -8,7 +8,7 @@ pygame.init()
 sc = pygame.display.set_mode((WIDTH, HEIGHT), pygame.DOUBLEBUF)
 clock = pygame.time.Clock()
 
-# sprites = Sprites()
+sprites = Sprites()
 player = Player(sprites)
 drawing = Drawing(sc, clock)
 # interaction = Interaction(player, sprites, drawing)

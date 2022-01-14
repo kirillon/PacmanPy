@@ -12,7 +12,7 @@ TILE = 100
 # player
 player_pos = HALF_WIDTH, HALF_HEIGHT
 player_angle = None
-player_speed = None
+player_speed = 0.8
 
 # colors
 WHITE = (255, 255, 255)
