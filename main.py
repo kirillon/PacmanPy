@@ -9,14 +9,15 @@ sc = pygame.display.set_mode((WIDTH, HEIGHT), pygame.DOUBLEBUF)
 clock = pygame.time.Clock()
 
 # sprites = Sprites()
-# player = Player(sprites)
+player = Player(sprites)
 drawing = Drawing(sc, clock)
 # interaction = Interaction(player, sprites, drawing)
 
 drawing.menu()
 pygame.mouse.set_visible(False)
 # interaction.play_music()
-
+pygame.mixer.music.load("sound/pacman_beginning.wav")
+pygame.mixer.music.play()
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:

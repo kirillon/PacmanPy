@@ -10,7 +10,7 @@ FPS = 60
 TILE = 100
 
 # player
-player_pos = None
+player_pos = HALF_WIDTH,HALF_HEIGHT
 player_angle = None
 player_speed = None
 
