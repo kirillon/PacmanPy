@@ -1,5 +1,5 @@
 import sys
-
+from player import Player
 import pygame
 from settings import *
 from drawing import Drawing
@@ -7,10 +7,12 @@ from drawing import Drawing
 pygame.init()
 sc = pygame.display.set_mode((WIDTH, HEIGHT), pygame.DOUBLEBUF)
 clock = pygame.time.Clock()
-k = 1
+all_sprites = pygame.sprite.Group()
 
-sprites = Sprites()
-player = Player(sprites)
+
+#sprites = Sprites()
+player = Player()
+all_sprites.add(player)
 drawing = Drawing(sc, clock)
 # interaction = Interaction(player, sprites, drawing)
 
@@ -23,8 +25,9 @@ while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit(0)
-
-            # player.movement()
+        sc.fill(BLACK)
+        all_sprites.draw(sc)
+        player.movement()
     # drawing.background()
 
     pygame.display.flip()

@@ -7,12 +7,12 @@ DOUBLE_WIDTH = 2 * WIDTH
 DOUBLE_HEIGHT = 2 * HEIGHT
 PENTA_HEIGHT = 5 * HEIGHT
 FPS = 60
-TILE = 100
+TILE = 10
 
 # player
 player_pos = HALF_WIDTH,HALF_HEIGHT
 player_angle = None
-player_speed = 0.8
+player_speed = 0.01
 
 # colors
 WHITE = (255, 255, 255)
