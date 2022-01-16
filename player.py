@@ -7,7 +7,7 @@ from settings import *
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-
+        self.flag_rect = 1
         self.image = pygame.Surface((TILE, TILE))
         self.image.fill(YELLOW)
         self.x, self.y = 13.5 * TILE, 26 * TILE
@@ -40,10 +40,11 @@ class Player(pygame.sprite.Sprite):
 
 
     def detect_collision(self, dx, dy):
-
+        if self.flag_rect:
+            self.rectlist = [r.rect for r in wall_map]
         next_rect = self.rect.copy()
         delta_x, delta_y = 0, 0
-        self.rectlist = [r.rect for r in wall_map]
+
 
         next_rect.move_ip(dx, dy)
         hit_indexes = next_rect.collidelistall(self.rectlist)

@@ -1,7 +1,7 @@
 import sys
 from player import Player
 from map import map
-from map import wall_map
+from map import wall_map,point_map
 import pygame
 from settings import *
 from drawing import Drawing
@@ -26,6 +26,7 @@ pygame.mouse.set_visible(False)
 # interaction.play_music()
 pygame.mixer.music.load("sound/pacman_beginning.wav")
 pygame.mixer.music.play()
+sc = pygame.display.set_mode((610, HEIGHT),pygame.RESIZABLE)
 map()
 while True:
     for event in pygame.event.get():
@@ -33,6 +34,7 @@ while True:
             sys.exit(0)
     sc.fill(BLACK)
     wall_map.draw(sc)
+    point_map.draw(sc)
     all_sprites.update()
     all_sprites.draw(sc)
     player.movement()

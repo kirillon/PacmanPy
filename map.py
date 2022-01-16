@@ -2,8 +2,9 @@ import pygame
 
 from wall import Wall
 from settings import *
-
+from point import Point
 wall_map = pygame.sprite.Group()
+point_map = pygame.sprite.Group()
 map_orig = [
     [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
     [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
@@ -54,11 +55,13 @@ def map():
                     imageName = "00" + imageName
                 elif len(imageName) == 2:
                     imageName = "0" + imageName
-                # Get image of desired tile
+
                 imageName = "tile" + imageName + ".png"
                 print(imageName, i,j)
 
                 wall_map.add(Wall(TILE * i, TILE * j, imageName))
+            if map_orig[j][i] == 2:
+                point_map.add(Point(TILE * i, TILE * j))
 
             currect_tile += 1
     print(wall_map)
