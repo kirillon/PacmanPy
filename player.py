@@ -18,6 +18,7 @@ class Player(pygame.sprite.Sprite):
         self.direction =  -(TILE * self.speed), 0
         self.next_direction = None
         self.side = TILE
+        self.score = 0
 
     @property
     def pos(self):
@@ -36,6 +37,10 @@ class Player(pygame.sprite.Sprite):
         if self.detect_collision(self.direction[0],self.direction[1]):
             self.x+= self.direction[0]
             self.y+=self.direction[1]
+        if self.x<0:
+            self.x=600
+        if self.x>600:
+            self.x=0
 
 
 

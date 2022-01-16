@@ -14,8 +14,9 @@ all_sprites = pygame.sprite.Group()
 
 
 #sprites = Sprites()
-drawing = Drawing(sc, clock)
+
 player = Player()
+drawing = Drawing(sc, clock,player)
 all_sprites.add(player)
 
 
@@ -40,6 +41,6 @@ while True:
     player.movement()
     print(player.x)
     # drawing.background()
-
+    drawing.score_viewer()
     pygame.display.flip()
     clock.tick(FPS)

@@ -4,17 +4,17 @@ import pygame
 from pygame.sprite import Sprite
 from wall import Wall
 from settings import *
-from map import map_orig
+from player import Player
 
 class Drawing:
-    def __init__(self, sc, clock):
+    def __init__(self, sc, clock,player):
         self.sc = sc
         self.logo = pygame.image.load(' img/logo.png').convert_alpha()
         self.menu_trigger = True
         self.clock = clock
         self.mouse_trigger = False
         self.wall_map = pygame.sprite.Group()
-
+        self.player = player
     def menu(self):
         button_font = pygame.font.Font('font/8bit.otf', 72)
         start = button_font.render('START', True, pygame.Color('WHITE'))
@@ -70,6 +70,10 @@ class Drawing:
 
             pygame.display.flip()
             self.clock.tick(20)
+    def score_viewer(self):
+        score_font = pygame.font.Font('font/8bit.otf', 36)
+        score = score_font.render(f'1 UP   {self.player.score}', True, pygame.Color('WHITE'))
+        self.sc.blit(score,(10, 5))
 
 
 
