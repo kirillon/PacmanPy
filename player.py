@@ -1,6 +1,6 @@
 import pygame
 
-from map import wall_map
+from map import wall_map,point_map
 from settings import *
 
 
@@ -15,10 +15,14 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = 13.5 * TILE, 26 * TILE
         self.rectlist = [r.rect for r in wall_map]
-        self.direction =  -(TILE * self.speed), 0
+        self.point_list = None
+        self.direction = -(TILE * self.speed), 0
         self.next_direction = None
         self.side = TILE
         self.score = 0
+        self.flag_music = 0
+        self.sound_munch_1 = pygame.mixer.Sound("sound/munch_1.wav")
+        self.sound_munch_2 = pygame.mixer.Sound("sound/munch_2.wav")
 
     @property
     def pos(self):
@@ -28,28 +32,26 @@ class Player(pygame.sprite.Sprite):
         self.keys_control()
         self.check_direction()
         self.rect.center = self.x, self.y
+        self.collision_point()
 
     def check_direction(self):
         if self.next_direction != None:
-            if self.detect_collision(self.next_direction[0],self.next_direction[1]):
+            if self.detect_collision(self.next_direction[0], self.next_direction[1]):
                 self.direction = self.next_direction
                 self.next_direction = None
-        if self.detect_collision(self.direction[0],self.direction[1]):
-            self.x+= self.direction[0]
-            self.y+=self.direction[1]
-        if self.x<0:
-            self.x=600
-        if self.x>600:
-            self.x=0
-
-
+        if self.detect_collision(self.direction[0], self.direction[1]):
+            self.x += self.direction[0]
+            self.y += self.direction[1]
+        if self.x < 0:
+            self.x = 600
+        if self.x > 600:
+            self.x = 0
 
     def detect_collision(self, dx, dy):
         if self.flag_rect:
             self.rectlist = [r.rect for r in wall_map]
         next_rect = self.rect.copy()
         delta_x, delta_y = 0, 0
-
 
         next_rect.move_ip(dx, dy)
         hit_indexes = next_rect.collidelistall(self.rectlist)
@@ -79,7 +81,6 @@ class Player(pygame.sprite.Sprite):
         else:
             return True
 
-
     def keys_control(self):
 
         keys = pygame.key.get_pressed()
@@ -87,7 +88,6 @@ class Player(pygame.sprite.Sprite):
             exit()
         if keys[pygame.K_w]:
             dy = -(TILE * self.speed)
-
 
             # self.y -= dy
             self.next_direction = 0, dy
@@ -101,14 +101,34 @@ class Player(pygame.sprite.Sprite):
         if keys[pygame.K_a]:
             dx = -(TILE * self.speed)
             # self.x -= dx
-            self.next_direction =dx, 0
+            self.next_direction = dx, 0
             # player_pos[0] -= dx
         if keys[pygame.K_d]:
             dx = TILE * self.speed
-            self.next_direction =dx, 0
+            self.next_direction = dx, 0
             # self.x += dx
             # player_pos[0] += dx
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 exit()
+    def collision_point(self):
+        next_rect = self.rect.copy()
+        self.point_list = [r.rect for r in point_map]
+        hit_indexes = pygame.sprite.spritecollide(self,point_map,False)
+        print(hit_indexes)
+        if len(hit_indexes):
+
+            for hit_index in hit_indexes:
+                point_map.remove(hit_index)
+                self.score+=10
+                if not pygame.mixer.get_busy():
+
+                    if self.flag_music == 0:
+
+                        self.sound_munch_1.play()
+                        self.flag_music = 1
+                    else:
+                        print("LOLI")
+                        self.sound_munch_2.play()
+                        self.flag_music = 0

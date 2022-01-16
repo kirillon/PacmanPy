@@ -70,6 +70,10 @@ class Drawing:
 
             pygame.display.flip()
             self.clock.tick(20)
+    def ready(self):
+        score_font = pygame.font.Font('font/8bit.otf', 36)
+        score = score_font.render("READY", True, pygame.Color('YELLOW'))
+        self.sc.blit(score, (610//3, 420))
     def score_viewer(self):
         score_font = pygame.font.Font('font/8bit.otf', 36)
         score = score_font.render(f'1 UP   {self.player.score}', True, pygame.Color('WHITE'))
