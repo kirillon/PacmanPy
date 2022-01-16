@@ -1,9 +1,10 @@
 import sys
 
 import pygame
-
+from pygame.sprite import Sprite
+from wall import Wall
 from settings import *
-
+from map import map_orig
 
 class Drawing:
     def __init__(self, sc, clock):
@@ -12,6 +13,7 @@ class Drawing:
         self.menu_trigger = True
         self.clock = clock
         self.mouse_trigger = False
+        self.wall_map = pygame.sprite.Group()
 
     def menu(self):
         button_font = pygame.font.Font('font/8bit.otf', 72)
@@ -68,3 +70,6 @@ class Drawing:
 
             pygame.display.flip()
             self.clock.tick(20)
+
+
+
