@@ -1,17 +1,22 @@
 import sys
 
 import pygame
-
+from pygame.sprite import Sprite
+from wall import Wall
 from settings import *
+from player import Player
+from map import point_map
 
 
 class Drawing:
-    def __init__(self, sc, clock):
+    def __init__(self, sc, clock, player):
         self.sc = sc
         self.logo = pygame.image.load(' img/logo.png').convert_alpha()
         self.menu_trigger = True
         self.clock = clock
         self.mouse_trigger = False
+        self.wall_map = pygame.sprite.Group()
+        self.player = player
 
     def menu(self):
         button_font = pygame.font.Font('font/8bit.otf', 72)
@@ -56,7 +61,7 @@ class Drawing:
                         sys.exit()
 
                 pygame.draw.polygon(self.sc, WHITE,
-                                    [(HALF_WIDTH - 250, HALF_HEIGHT+130), (HALF_WIDTH - 250, HALF_HEIGHT + 210),
+                                    [(HALF_WIDTH - 250, HALF_HEIGHT + 130), (HALF_WIDTH - 250, HALF_HEIGHT + 210),
                                      (HALF_WIDTH - 200, HALF_HEIGHT + 170)])
             pygame.draw.rect(self.sc, BLACK, button_start)
             pygame.draw.rect(self.sc, BLACK, button_ext)
@@ -68,3 +73,22 @@ class Drawing:
 
             pygame.display.flip()
             self.clock.tick(20)
+
+    def ready(self):
+        ready_font = pygame.font.Font('font/8bit.otf', 36)
+        ready = ready_font.render("READY", True, pygame.Color('YELLOW'))
+        self.sc.blit(ready, (610 // 3, 420))
+
+    def score_viewer(self):
+        score_font = pygame.font.Font('font/8bit.otf', 36)
+        score = score_font.render(f'1 UP   {self.player.score}', True, pygame.Color('WHITE'))
+        self.sc.blit(score, (10, 5))
+
+    def check_win(self):
+        if len(point_map) == 0:
+            return True
+
+    def win(self):
+        win_font = pygame.font.Font('font/8bit.otf', 32)
+        win = win_font.render("YOU ARE WIN", True, pygame.Color('YELLOW'))
+        self.sc.blit(win, ((610 // 4.3, 420)))
