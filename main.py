@@ -37,14 +37,17 @@ while True:
         sc.fill(BLACK)
         wall_map.draw(sc)
         point_map.draw(sc)
-        all_sprites.update()
-        all_sprites.draw(sc)
-        player.movement()
-        print(player.x)
-        # drawing.background()
+
         drawing.score_viewer()
+        if drawing.check_win():
+            drawing.win()
+        else:
+            all_sprites.update()
+            all_sprites.draw(sc)
+            player.movement()
         pygame.display.flip()
         clock.tick(FPS)
+
 
     else:
         sc.fill(BLACK)

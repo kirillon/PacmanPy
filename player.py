@@ -1,6 +1,6 @@
 import pygame
 
-from map import wall_map,point_map
+from map import wall_map, point_map
 from settings import *
 
 
@@ -112,16 +112,17 @@ class Player(pygame.sprite.Sprite):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 exit()
+
     def collision_point(self):
         next_rect = self.rect.copy()
         self.point_list = [r.rect for r in point_map]
-        hit_indexes = pygame.sprite.spritecollide(self,point_map,False)
+        hit_indexes = pygame.sprite.spritecollide(self, point_map, False)
         print(hit_indexes)
         if len(hit_indexes):
 
             for hit_index in hit_indexes:
                 point_map.remove(hit_index)
-                self.score+=10
+                self.score += 10
                 if not pygame.mixer.get_busy():
 
                     if self.flag_music == 0:
