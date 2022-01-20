@@ -75,11 +75,12 @@ class Player(pygame.sprite.Sprite):
                 dy = 0
             elif delta_x < delta_y:
                 dx = 0
-
+        player_pos[0], player_pos[1] = self.x, self.y
         if dx == 0 and dy == 0:
             return False
         else:
             return True
+
 
     def keys_control(self):
 

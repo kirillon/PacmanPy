@@ -45,6 +45,7 @@ while True:
             all_sprites.update()
             all_sprites.draw(sc)
             player.movement()
+        print(player_pos)
         pygame.display.flip()
         clock.tick(FPS)
 
