@@ -70,6 +70,11 @@ class Drawing:
 
             self.sc.blit(start, (HALF_WIDTH - 170, HALF_HEIGHT))
             self.sc.blit(ext, (HALF_WIDTH - 115, HALF_HEIGHT + 130))
+            file_db = open('database.txt', 'r')
+            score_font = pygame.font.Font('font/8bit.otf', 36)
+            score = score_font.render(f"HIGH SCORE   {file_db.read()}", True, pygame.Color('WHITE'))
+            file_db.close()
+            self.sc.blit(score, (120, 10))
 
             pygame.display.flip()
             self.clock.tick(20)
@@ -85,10 +90,15 @@ class Drawing:
         self.sc.blit(score, (10, 5))
 
     def check_win(self):
+
         if len(point_map) == 0:
             return True
 
     def win(self):
         win_font = pygame.font.Font('font/8bit.otf', 32)
         win = win_font.render("YOU ARE WIN", True, pygame.Color('YELLOW'))
-        self.sc.blit(win, ((610 // 4.3, 420)))
+        self.sc.blit(win, (610 // 4.3, 420))
+        file_database = open('database.txt', 'r+')
+
+        file_database.write(str(max(self.player.score, file_database.read())))
+        file_database.close()
