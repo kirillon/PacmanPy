@@ -65,8 +65,3 @@ while True:
         pygame.display.flip()
         pygame.time.delay(2000)
         gameflag = 0
-
-
-
-
-
