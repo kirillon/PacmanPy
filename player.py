@@ -35,7 +35,7 @@ class Player(pygame.sprite.Sprite):
         self.collision_point()
 
     def check_direction(self):
-        if self.next_direction != None:
+        if self.next_direction is not None:
             if self.detect_collision(self.next_direction[0], self.next_direction[1]):
                 self.direction = self.next_direction
                 self.next_direction = None
@@ -75,7 +75,7 @@ class Player(pygame.sprite.Sprite):
                 dy = 0
             elif delta_x < delta_y:
                 dx = 0
-
+        player_pos[0], player_pos[1] = self.x, self.y
         if dx == 0 and dy == 0:
             return False
         else:
@@ -114,7 +114,7 @@ class Player(pygame.sprite.Sprite):
                 exit()
 
     def collision_point(self):
-        next_rect = self.rect.copy()
+
         self.point_list = [r.rect for r in point_map]
         hit_indexes = pygame.sprite.spritecollide(self, point_map, False)
         print(hit_indexes)

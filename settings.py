@@ -10,10 +10,9 @@ FPS = 30
 TILE = 22
 
 # player
-player_pos = [HALF_WIDTH, HALF_HEIGHT]
+player_pos = [HALF_WIDTH,HALF_HEIGHT]
 player_angle = None
 player_speed = 1/4
-ghost_speed = 1/4
 
 # colors
 WHITE = (255, 255, 255)
