@@ -3,6 +3,7 @@ import pygame
 from wall import Wall
 from settings import *
 from point import Point
+
 wall_map = pygame.sprite.Group()
 point_map = pygame.sprite.Group()
 map_orig = [
@@ -45,23 +46,23 @@ map_orig = [
 ]
 
 
-def map():
+def build_map():
     currect_tile = 0
     for j in range(3, len(map_orig) - 2):
         for i in range(len(map_orig[0])):
             if map_orig[j][i] == 3:
-                imageName = str(currect_tile)
-                if len(imageName) == 1:
-                    imageName = "00" + imageName
-                elif len(imageName) == 2:
-                    imageName = "0" + imageName
+                image_name = str(currect_tile)
+                if len(image_name) == 1:
+                    image_name = "00" + image_name
+                elif len(image_name) == 2:
+                    image_name = "0" + image_name
 
-                imageName = "tile" + imageName + ".png"
-                print(imageName, i,j)
+                image_name = "tile" + image_name + ".png"
+                #print(image_name, i, j)
 
-                wall_map.add(Wall(TILE * i, TILE * j, imageName))
+                wall_map.add(Wall(TILE * i, TILE * j, image_name))
             if map_orig[j][i] == 2:
                 point_map.add(Point(TILE * i, TILE * j))
 
             currect_tile += 1
-    print(wall_map)
+    #print(wall_map)

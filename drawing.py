@@ -17,6 +17,8 @@ class Drawing:
         self.mouse_trigger = False
         self.wall_map = pygame.sprite.Group()
         self.player = player
+        self.game_ov = 0
+        self.w = 0
 
     def menu(self):
         button_font = pygame.font.Font('font/8bit.otf', 72)
@@ -98,7 +100,24 @@ class Drawing:
         win_font = pygame.font.Font('font/8bit.otf', 32)
         win = win_font.render("YOU ARE WIN", True, pygame.Color('YELLOW'))
         self.sc.blit(win, (610 // 4.3, 420))
-        file_database = open('database.txt', 'r+')
+        if not self.w:
+            file_database = open('database.txt', 'r+')
+            max_score = max(self.player.score, int(file_database.read()))
+            file_database.close()
+            file_database = open('database.txt', 'w')
+            file_database.write(str(max_score))
+            file_database.close()
+            self.w = 1
 
-        file_database.write(str(max(self.player.score, file_database.read())))
-        file_database.close()
+    def game_over(self):
+        win_font = pygame.font.Font('font/8bit.otf', 32)
+        win = win_font.render("GAME OVER", True, pygame.Color('YELLOW'))
+        self.sc.blit(win, (610 // 4.3, 420))
+        if not self.game_ov:
+            file_database = open('database.txt', 'r+')
+            max_score = max(self.player.score, int(file_database.read()))
+            file_database.close()
+            file_database = open('database.txt', 'w')
+            file_database.write(str(max_score))
+            file_database.close()
+            self.game_ov = 1

@@ -2,14 +2,15 @@ import pygame
 
 from map import wall_map, point_map
 from settings import *
+from ghost import ghost_spites
 
 
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.flag_rect = 1
-        self.image = pygame.Surface((TILE, TILE))
-        self.image.fill(YELLOW)
+        self.image = pygame.image.load('img/circle.png')
+        self.image = pygame.transform.scale(self.image, (TILE, TILE))
         self.x, self.y = 13.5 * TILE, 26 * TILE
         self.speed = player_speed
         self.rect = self.image.get_rect()
@@ -23,12 +24,14 @@ class Player(pygame.sprite.Sprite):
         self.flag_music = 0
         self.sound_munch_1 = pygame.mixer.Sound("sound/munch_1.wav")
         self.sound_munch_2 = pygame.mixer.Sound("sound/munch_2.wav")
+        self.flag_anim = 0
 
     @property
     def pos(self):
         return (self.x, self.y)
 
     def movement(self):
+
         self.keys_control()
         self.check_direction()
         self.rect.center = self.x, self.y
@@ -39,9 +42,34 @@ class Player(pygame.sprite.Sprite):
             if self.detect_collision(self.next_direction[0], self.next_direction[1]):
                 self.direction = self.next_direction
                 self.next_direction = None
+
         if self.detect_collision(self.direction[0], self.direction[1]):
             self.x += self.direction[0]
             self.y += self.direction[1]
+            if not self.flag_anim:
+                if self.direction[0] > 0:
+                    self.image = pygame.image.load('img/right_us.png')
+                if self.direction[0] < 0:
+                    self.image = pygame.image.load('img/left_us.png')
+                if self.direction[1] > 0:
+                    self.image = pygame.image.load('img/down_us.png')
+                if self.direction[1] < 0:
+                    self.image = pygame.image.load('img/up_us.png')
+                self.flag_anim = 1
+            elif self.flag_anim == 1:
+                if self.direction[0] > 0:
+                    self.image = pygame.image.load('img/right_eat.png')
+                if self.direction[0] < 0:
+                    self.image = pygame.image.load('img/left_eat.png')
+                if self.direction[1] > 0:
+                    self.image = pygame.image.load('img/down_eat.png')
+                if self.direction[1] < 0:
+                    self.image = pygame.image.load('img/up_eat.png')
+                self.flag_anim = 2
+            else:
+                self.image = pygame.image.load('img/circle.png')
+                self.flag_anim = 0
+
         if self.x < 0:
             self.x = 600
         if self.x > 600:
@@ -50,12 +78,13 @@ class Player(pygame.sprite.Sprite):
     def detect_collision(self, dx, dy):
         if self.flag_rect:
             self.rectlist = [r.rect for r in wall_map]
+            self.flag_rect = 0
         next_rect = self.rect.copy()
         delta_x, delta_y = 0, 0
 
         next_rect.move_ip(dx, dy)
         hit_indexes = next_rect.collidelistall(self.rectlist)
-        print(hit_indexes)
+        #print(hit_indexes)
         if len(hit_indexes):
             delta_x, delta_y = 0, 0
             for hit_index in hit_indexes:
@@ -117,7 +146,8 @@ class Player(pygame.sprite.Sprite):
 
         self.point_list = [r.rect for r in point_map]
         hit_indexes = pygame.sprite.spritecollide(self, point_map, False)
-        print(hit_indexes)
+
+        #print(hit_indexes)
         if len(hit_indexes):
 
             for hit_index in hit_indexes:
@@ -130,6 +160,14 @@ class Player(pygame.sprite.Sprite):
                         self.sound_munch_1.play()
                         self.flag_music = 1
                     else:
-                        print("LOLI")
+
                         self.sound_munch_2.play()
                         self.flag_music = 0
+
+    def check_die(self):
+        ghostlist = [g.rect for g in ghost_spites]
+        next_rect = self.rect.copy()
+        hit_indexes = next_rect.collidelistall(ghostlist)
+
+        if len(hit_indexes):
+            return True
