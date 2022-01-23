@@ -6,6 +6,7 @@ from point import Point
 
 wall_map = pygame.sprite.Group()
 point_map = pygame.sprite.Group()
+door_map = pygame.sprite.Group()
 map_orig = [
     [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
     [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
@@ -22,7 +23,7 @@ map_orig = [
     [3, 3, 3, 3, 3, 3, 2, 3, 3, 3, 3, 3, 1, 3, 3, 1, 3, 3, 3, 3, 3, 2, 3, 3, 3, 3, 3, 3],
     [3, 3, 3, 3, 3, 3, 2, 3, 3, 3, 3, 3, 1, 3, 3, 1, 3, 3, 3, 3, 3, 2, 3, 3, 3, 3, 3, 3],
     [3, 3, 3, 3, 3, 3, 2, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 2, 3, 3, 3, 3, 3, 3],
-    [3, 3, 3, 3, 3, 3, 2, 3, 3, 1, 3, 3, 3, 3, 3, 3, 3, 3, 1, 3, 3, 2, 3, 3, 3, 3, 3, 3],
+    [3, 3, 3, 3, 3, 3, 2, 3, 3, 1, 3, 3, 3, 7, 7, 3, 3, 3, 1, 3, 3, 2, 3, 3, 3, 3, 3, 3],
     [3, 3, 3, 3, 3, 3, 2, 3, 3, 1, 3, 4, 4, 4, 4, 4, 4, 3, 1, 3, 3, 2, 3, 3, 3, 3, 3, 3],
     [1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 3, 4, 4, 4, 4, 4, 4, 3, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1],  # Middle Lane Row: 14
     [3, 3, 3, 3, 3, 3, 2, 3, 3, 1, 3, 4, 4, 4, 4, 4, 4, 3, 1, 3, 3, 2, 3, 3, 3, 3, 3, 3],
@@ -50,7 +51,7 @@ def build_map():
     currect_tile = 0
     for j in range(3, len(map_orig) - 2):
         for i in range(len(map_orig[0])):
-            if map_orig[j][i] == 3:
+            if map_orig[j][i] == 3 or map_orig[j][i]==7:
                 image_name = str(currect_tile)
                 if len(image_name) == 1:
                     image_name = "00" + image_name
@@ -58,11 +59,13 @@ def build_map():
                     image_name = "0" + image_name
 
                 image_name = "tile" + image_name + ".png"
-                #print(image_name, i, j)
-
-                wall_map.add(Wall(TILE * i, TILE * j, image_name))
+                if map_orig[j][i] == 7:
+                    door_map.add(Wall(TILE * i, TILE * j, image_name))
+                else:
+                    wall_map.add(Wall(TILE * i, TILE * j, image_name))
             if map_orig[j][i] == 2:
                 point_map.add(Point(TILE * i, TILE * j))
+
 
             currect_tile += 1
     #print(wall_map)

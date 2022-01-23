@@ -1,6 +1,6 @@
 import pygame
 
-from map import wall_map, point_map
+from map import wall_map, point_map,door_map
 from settings import *
 from ghost import ghost_spites
 
@@ -78,6 +78,7 @@ class Player(pygame.sprite.Sprite):
     def detect_collision(self, dx, dy):
         if self.flag_rect:
             self.rectlist = [r.rect for r in wall_map]
+            self.rectlist+= [r.rect for r in door_map]
             self.flag_rect = 0
         next_rect = self.rect.copy()
         delta_x, delta_y = 0, 0

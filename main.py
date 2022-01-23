@@ -1,7 +1,7 @@
 import sys
 from player import Player
 from map import build_map
-from map import wall_map, point_map
+from map import wall_map, point_map,door_map
 import pygame
 from settings import *
 from drawing import Drawing
@@ -41,6 +41,7 @@ while True:
         sc.fill(BLACK)
         wall_map.draw(sc)
         point_map.draw(sc)
+        door_map.draw(sc)
 
         drawing.score_viewer()
         if drawing.check_win():
@@ -49,6 +50,7 @@ while True:
             sc.fill(BLACK)
             wall_map.draw(sc)
             point_map.draw(sc)
+            door_map.draw(sc)
 
             all_sprites.draw(sc)
             drawing.score_viewer()
@@ -62,7 +64,7 @@ while True:
                 sc.fill(BLACK)
                 wall_map.draw(sc)
                 point_map.draw(sc)
-
+                door_map.draw(sc)
                 drawing.score_viewer()
                 pygame.display.flip()
                 player.image = pygame.image.load(f"img/die{i}.png")
@@ -75,7 +77,7 @@ while True:
             sc.fill(BLACK)
             wall_map.draw(sc)
             point_map.draw(sc)
-
+            door_map.draw(sc)
             drawing.game_over()
             drawing.score_viewer()
             pygame.display.flip()
@@ -94,6 +96,7 @@ while True:
     else:
         sc.fill(BLACK)
         wall_map.draw(sc)
+        door_map.draw(sc)
         point_map.draw(sc)
         drawing.score_viewer()
         all_sprites.update()
