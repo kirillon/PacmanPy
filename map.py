@@ -57,7 +57,7 @@ def map():
                     imageName = "0" + imageName
 
                 imageName = "tile" + imageName + ".png"
-                print(imageName, i,j)
+                print(imageName, i, j)
 
                 wall_map.add(Wall(TILE * i, TILE * j, imageName))
             if map_orig[j][i] == 2:
