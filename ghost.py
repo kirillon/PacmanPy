@@ -36,7 +36,6 @@ class Ghost(pg.sprite.Sprite):
             self.found(path, pozOut)
 
             result = self.printPath(path, pozOut)
-            print(result)
             if not len(result) == 0 and not type(result[0]) != tuple:
                 if self.detect_collision(result[0][0], result[0][1]):
                     self.x += result[0][0] * self.speed * TILE
