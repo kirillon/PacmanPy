@@ -8,7 +8,7 @@ from map import point_map
 class Drawing:
     def __init__(self, sc, clock, player):
         self.sc = sc
-        self.logo = pygame.image.load(' img/logo.png').convert_alpha()
+        self.logo = pygame.image.load('img/logo.png').convert_alpha()
         self.menu_trigger = True
         self.clock = clock
         self.mouse_trigger = False
