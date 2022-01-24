@@ -40,7 +40,7 @@ while True:
         wall_map.draw(sc)
         point_map.draw(sc)
         door_map.draw(sc)
-        player.movement()
+        
         ghost_r.move()
         ghost_b.move()
         ghost_p.move()
@@ -88,6 +88,7 @@ while True:
         else:
             ghost_sprites.update()
             ghost_sprites.draw(sc)
+            player.movement()
             all_sprites.update()
             all_sprites.draw(sc)
             pygame.display.flip()
