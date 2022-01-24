@@ -7,10 +7,11 @@ ghost_sprites = pg.sprite.Group()
 
 
 class Ghost(pg.sprite.Sprite):
-    def __init__(self, x, y, speed, delay):
+    def __init__(self, x, y, speed, delay, image, color):
         pg.sprite.Sprite.__init__(self)
         self.flag_rect = 1
-        self.image = pg.Surface([TILE, TILE])
+        self.image = pg.image.load(image)
+        self.image = pg.transform.scale(self.image, (TILE, TILE))
         self.x, self.y = x * TILE, y * TILE
         self.rect = self.image.get_rect()
         self.rect.center = x * TILE, y * TILE
@@ -19,6 +20,8 @@ class Ghost(pg.sprite.Sprite):
         self.rectlist = [r.rect for r in wall_map]
         self.start_ticks = pg.time.get_ticks()
         self.delay = delay
+        self.flag_anim = 0
+        self.color = color
 
     def move(self):
         if pg.time.get_ticks() - self.start_ticks - 4000 >= self.delay:
@@ -39,9 +42,49 @@ class Ghost(pg.sprite.Sprite):
                     self.x += result[0][0] * self.speed * TILE
                     self.y += result[0][1] * self.speed * TILE
                     self.direction = (result[0][0], result[0][1])
+                    if not self.flag_anim:
+                        if self.direction[0] > 0:
+                            self.image = pg.image.load(f'img/{self.color}_right_1.png')
+                        if self.direction[0] < 0:
+                            self.image = pg.image.load(f'img/{self.color}_left_1.png')
+                        if self.direction[1] > 0:
+                            self.image = pg.image.load(f'img/{self.color}_down_1.png')
+                        if self.direction[1] < 0:
+                            self.image = pg.image.load(f'img/{self.color}_up_1.png')
+                        self.flag_anim = 1
+                    else:
+                        if self.direction[0] > 0:
+                            self.image = pg.image.load(f'img/{self.color}_right_2.png')
+                        if self.direction[0] < 0:
+                            self.image = pg.image.load(f'img/{self.color}_left_2.png')
+                        if self.direction[1] > 0:
+                            self.image = pg.image.load(f'img/{self.color}_down_2.png')
+                        if self.direction[1] < 0:
+                            self.image = pg.image.load(f'img/{self.color}_up_2.png')
+                        self.flag_anim = 0
                 else:
                     self.x += self.direction[0] * self.speed * TILE
                     self.y += self.direction[1] * self.speed * TILE
+                    if not self.flag_anim:
+                        if self.direction[0] > 0:
+                            self.image = pg.image.load(f'img/{self.color}_right_1.png')
+                        if self.direction[0] < 0:
+                            self.image = pg.image.load(f'img/{self.color}_left_1.png')
+                        if self.direction[1] > 0:
+                            self.image = pg.image.load(f'img/{self.color}_down_1.png')
+                        if self.direction[1] < 0:
+                            self.image = pg.image.load(f'img/{self.color}_up_1.png')
+                        self.flag_anim = 1
+                    else:
+                        if self.direction[0] > 0:
+                            self.image = pg.image.load(f'img/{self.color}_right_2.png')
+                        if self.direction[0] < 0:
+                            self.image = pg.image.load(f'img/{self.color}_left_2.png')
+                        if self.direction[1] > 0:
+                            self.image = pg.image.load(f'img/{self.color}_down_2.png')
+                        if self.direction[1] < 0:
+                            self.image = pg.image.load(f'img/{self.color}_up_2.png')
+                        self.flag_anim = 0
 
     def detect_collision(self, dx, dy):
         if self.flag_rect:

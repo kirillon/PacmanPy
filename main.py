@@ -16,10 +16,10 @@ died = 0
 gameflag = 1
 
 player = Player()
-ghost_r = Ghost(15, 14, 1/14, 0)
-ghost_b = Ghost(13, 17, 1/15, 4000)
-ghost_p = Ghost(14, 17, 1/16, 6000)
-ghost_o = Ghost(15, 17, 1/17, 8000)
+ghost_r = Ghost(15, 14, 1/8, 0, "img/r_left_1.png", "r")
+ghost_b = Ghost(13, 17, 1/11, 4000, "img/b_left_1.png", "b")
+ghost_p = Ghost(14, 17, 1/11, 6000, "img/p_left_1.png", "p")
+ghost_o = Ghost(15, 17, 1/12, 8000, "img/o_left_1.png", "o")
 drawing = Drawing(sc, clock, player)
 ghost_sprites.add(ghost_r, ghost_b, ghost_p, ghost_o)
 all_sprites.add(player)
