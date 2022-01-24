@@ -1,65 +1,55 @@
-from random import choice
-
 import pygame as pg
 
-from map import wall_map
-from settings import TILE, ghost_speed
+from map import wall_map, map_orig
+from settings import TILE, player_pos
 
-ghost_spites = pg.sprite.Group()
+ghost_sprites = pg.sprite.Group()
 
 
 class Ghost(pg.sprite.Sprite):
-    def __init__(self):
+    def __init__(self, x, y, speed, delay):
         pg.sprite.Sprite.__init__(self)
         self.flag_rect = 1
         self.image = pg.Surface([TILE, TILE])
-        self.image.fill(pg.Color("red"))
-        self.x, self.y = 15 * TILE, 14 * TILE
+        self.x, self.y = x * TILE, y * TILE
         self.rect = self.image.get_rect()
-        self.rect.center = 15 * TILE, 14 * TILE
-        self.speed = ghost_speed
+        self.rect.center = x * TILE, y * TILE
+        self.speed = speed
         self.direction = -1, 0
-        self.next_direction = None
         self.rectlist = [r.rect for r in wall_map]
-        self.dir = [(-1, 0), (1, 0), (0, 1), (0, -1)]
-    @property
-    def pos(self):
-        return (self.x, self.y)
+        self.start_ticks = pg.time.get_ticks()
+        self.delay = delay
 
-    def movement(self):
-        self.check_direction()
-        self.rect.center = self.x, self.y
+    def move(self):
+        if pg.time.get_ticks() - self.start_ticks - 4000 >= self.delay:
+            self.rect.center = self.x, self.y
 
-    def check_direction(self):
-        if self.next_direction is not None:
-            if self.detect_collision(self.next_direction[0], self.next_direction[1]):
-                self.direction = self.next_direction
-                self.next_direction = None
-        if self.detect_collision(self.direction[0], self.direction[1]):
-            self.x += self.direction[0] * ghost_speed * TILE
-            self.y += self.direction[1] * ghost_speed * TILE
-        else:
-            dir_r = list()
-            for i in range(len(self.dir)):
-                #print(self.detect_collision(self.dir[i][0], self.dir[i][1]))
-                if self.detect_collision(self.dir[i][0], self.dir[i][1]):
-                    dir_r.append(self.dir[i])
-                    #print(dir_r)
-            self.next_direction = choice(dir_r)
-        if self.x < 0:
-            self.x = 600
-        if self.x > 600:
-            self.x = 0
+            pozIn = (int(self.x // TILE), int(self.y // TILE))
+            pozOut = (int(player_pos[1] // TILE), int(player_pos[0] // TILE))
+
+            path = [[0 if not x == 3 else -1 for x in y] for y in map_orig]
+            path[pozIn[1]][pozIn[0]] = 1
+
+            self.found(path, pozOut)
+
+            result = self.printPath(path, pozOut)
+            print(result)
+            if not len(result) == 0 and not type(result[0]) != tuple:
+                if self.detect_collision(result[0][0], result[0][1]):
+                    self.x += result[0][0] * self.speed * TILE
+                    self.y += result[0][1] * self.speed * TILE
+                    self.direction = (result[0][0], result[0][1])
+                else:
+                    self.x += self.direction[0] * self.speed * TILE
+                    self.y += self.direction[1] * self.speed * TILE
 
     def detect_collision(self, dx, dy):
         if self.flag_rect:
             self.rectlist = [r.rect for r in wall_map]
         next_rect = self.rect.copy()
-        delta_x, delta_y = 0, 0
 
         next_rect.move_ip(dx, dy)
         hit_indexes = next_rect.collidelistall(self.rectlist)
-        #print(hit_indexes)
         if len(hit_indexes):
             delta_x, delta_y = 0, 0
             for hit_index in hit_indexes:
@@ -73,7 +63,7 @@ class Ghost(pg.sprite.Sprite):
                 else:
                     delta_y += hit_rect.bottom - next_rect.top
 
-            if abs(delta_x - delta_y) < 20:  # <-------------
+            if abs(delta_x - delta_y) < 20:
                 dx, dy = 0, 0
             elif delta_x > delta_y:
                 dy = 0
@@ -84,3 +74,46 @@ class Ghost(pg.sprite.Sprite):
             return False
         else:
             return True
+
+    def found(self, pathArr, finPoint):
+        weight = 1
+        for i in range(len(pathArr) * len(pathArr[0])):
+            weight += 1
+            for y in range(len(pathArr)):
+                for x in range(len(pathArr[y])):
+                    if pathArr[y][x] == (weight - 1):
+                        if y > 0 and pathArr[y - 1][x] == 0:
+                            pathArr[y - 1][x] = weight
+                        if y < (len(pathArr) - 1) and pathArr[y + 1][x] == 0:
+                            pathArr[y + 1][x] = weight
+                        if x > 0 and pathArr[y][x - 1] == 0:
+                            pathArr[y][x - 1] = weight
+                        if x < (len(pathArr[y]) - 1) and pathArr[y][x + 1] == 0:
+                            pathArr[y][x + 1] = weight
+
+                        if (abs(y - finPoint[0]) + abs(x - finPoint[1])) == 1:
+                            pathArr[finPoint[0]][finPoint[1]] = weight
+                            return True
+        return False
+
+    def printPath(self, pathArr, finPoint):
+        y = finPoint[0]
+        x = finPoint[1]
+        weight = pathArr[y][x]
+        result = list(range(weight))
+        while weight:
+            weight -= 1
+            if y > 0 and pathArr[y - 1][x] == weight:
+                y -= 1
+                result[weight] = (0, 1)
+            elif y < (len(pathArr) - 1) and pathArr[y + 1][x] == weight:
+                result[weight] = (0, -1)
+                y += 1
+            elif x > 0 and pathArr[y][x - 1] == weight:
+                result[weight] = (1, 0)
+                x -= 1
+            elif x < (len(pathArr[y]) - 1) and pathArr[y][x + 1] == weight:
+                result[weight] = (-1, 0)
+                x += 1
+
+        return result[1:]

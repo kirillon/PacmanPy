@@ -51,7 +51,7 @@ def build_map():
     currect_tile = 0
     for j in range(3, len(map_orig) - 2):
         for i in range(len(map_orig[0])):
-            if map_orig[j][i] == 3 or map_orig[j][i]==7:
+            if map_orig[j][i] == 3 or map_orig[j][i] == 7:
                 image_name = str(currect_tile)
                 if len(image_name) == 1:
                     image_name = "00" + image_name
@@ -66,6 +66,4 @@ def build_map():
             if map_orig[j][i] == 2:
                 point_map.add(Point(TILE * i, TILE * j))
 
-
             currect_tile += 1
-    #print(wall_map)

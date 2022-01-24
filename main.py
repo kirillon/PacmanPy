@@ -1,11 +1,11 @@
 import sys
 from player import Player
 from map import build_map
-from map import wall_map, point_map,door_map
+from map import wall_map, point_map, door_map
 import pygame
 from settings import *
 from drawing import Drawing
-from ghost import Ghost, ghost_spites
+from ghost import Ghost, ghost_sprites
 
 pygame.init()
 sc = pygame.display.set_mode((WIDTH, HEIGHT), pygame.DOUBLEBUF)
@@ -15,19 +15,17 @@ died = 0
 
 gameflag = 1
 
-# sprites = Sprites()
-
 player = Player()
-ghost_r = Ghost()
+ghost_r = Ghost(15, 14, 1/14, 0)
+ghost_b = Ghost(13, 17, 1/15, 4000)
+ghost_p = Ghost(14, 17, 1/16, 6000)
+ghost_o = Ghost(15, 17, 1/17, 8000)
 drawing = Drawing(sc, clock, player)
-ghost_spites.add(ghost_r)
+ghost_sprites.add(ghost_r, ghost_b, ghost_p, ghost_o)
 all_sprites.add(player)
-
-# interaction = Interaction(player, sprites, drawing)
 
 drawing.menu()
 pygame.mouse.set_visible(False)
-# interaction.play_music()
 pygame.mixer.music.load("sound/pacman_beginning.wav")
 pygame.mixer.music.set_volume(0.3)
 pygame.mixer.music.play()
@@ -42,6 +40,11 @@ while True:
         wall_map.draw(sc)
         point_map.draw(sc)
         door_map.draw(sc)
+        player.movement()
+        ghost_r.move()
+        ghost_b.move()
+        ghost_p.move()
+        ghost_o.move()
 
         drawing.score_viewer()
         if drawing.check_win():
@@ -83,11 +86,8 @@ while True:
             pygame.display.flip()
 
         else:
-
-            player.movement()
-            ghost_r.movement()
-            ghost_spites.update()
-            ghost_spites.draw(sc)
+            ghost_sprites.update()
+            ghost_sprites.draw(sc)
             all_sprites.update()
             all_sprites.draw(sc)
             pygame.display.flip()
@@ -101,8 +101,8 @@ while True:
         drawing.score_viewer()
         all_sprites.update()
         drawing.ready()
-        ghost_spites.update()
-        ghost_spites.draw(sc)
+        ghost_sprites.update()
+        ghost_sprites.draw(sc)
         pygame.display.flip()
 
         pygame.time.delay(2000)

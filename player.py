@@ -1,8 +1,8 @@
 import pygame
 
-from map import wall_map, point_map,door_map
+from map import wall_map, point_map, door_map
 from settings import *
-from ghost import ghost_spites
+from ghost import ghost_sprites
 
 
 class Player(pygame.sprite.Sprite):
@@ -25,10 +25,6 @@ class Player(pygame.sprite.Sprite):
         self.sound_munch_1 = pygame.mixer.Sound("sound/munch_1.wav")
         self.sound_munch_2 = pygame.mixer.Sound("sound/munch_2.wav")
         self.flag_anim = 0
-
-    @property
-    def pos(self):
-        return (self.x, self.y)
 
     def movement(self):
 
@@ -78,14 +74,12 @@ class Player(pygame.sprite.Sprite):
     def detect_collision(self, dx, dy):
         if self.flag_rect:
             self.rectlist = [r.rect for r in wall_map]
-            self.rectlist+= [r.rect for r in door_map]
+            self.rectlist += [r.rect for r in door_map]
             self.flag_rect = 0
         next_rect = self.rect.copy()
-        delta_x, delta_y = 0, 0
 
         next_rect.move_ip(dx, dy)
         hit_indexes = next_rect.collidelistall(self.rectlist)
-        #print(hit_indexes)
         if len(hit_indexes):
             delta_x, delta_y = 0, 0
             for hit_index in hit_indexes:
@@ -99,7 +93,7 @@ class Player(pygame.sprite.Sprite):
                 else:
                     delta_y += hit_rect.bottom - next_rect.top
 
-            if abs(delta_x - delta_y) < 20:  # <-------------
+            if abs(delta_x - delta_y) < 20:
                 dx, dy = 0, 0
             elif delta_x > delta_y:
                 dy = 0
@@ -118,26 +112,18 @@ class Player(pygame.sprite.Sprite):
             exit()
         if keys[pygame.K_w]:
             dy = -(TILE * self.speed)
-
-            # self.y -= dy
             self.next_direction = 0, dy
 
-            # player_pos[1] -=dy
         if keys[pygame.K_s]:
             dy = TILE * self.speed
-            # self.y += dy
             self.next_direction = 0, dy
             player_pos[1] += dy
         if keys[pygame.K_a]:
             dx = -(TILE * self.speed)
-            # self.x -= dx
             self.next_direction = dx, 0
-            # player_pos[0] -= dx
         if keys[pygame.K_d]:
             dx = TILE * self.speed
             self.next_direction = dx, 0
-            # self.x += dx
-            # player_pos[0] += dx
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -148,7 +134,6 @@ class Player(pygame.sprite.Sprite):
         self.point_list = [r.rect for r in point_map]
         hit_indexes = pygame.sprite.spritecollide(self, point_map, False)
 
-        #print(hit_indexes)
         if len(hit_indexes):
 
             for hit_index in hit_indexes:
@@ -166,7 +151,7 @@ class Player(pygame.sprite.Sprite):
                         self.flag_music = 0
 
     def check_die(self):
-        ghostlist = [g.rect for g in ghost_spites]
+        ghostlist = [g.rect for g in ghost_sprites]
         next_rect = self.rect.copy()
         hit_indexes = next_rect.collidelistall(ghostlist)
 

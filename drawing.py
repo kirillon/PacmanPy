@@ -1,10 +1,7 @@
 import sys
 
 import pygame
-from pygame.sprite import Sprite
-from wall import Wall
 from settings import *
-from player import Player
 from map import point_map
 
 
