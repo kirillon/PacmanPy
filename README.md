@@ -26,24 +26,24 @@
 Структура нашего проекта:
 
 1. BoardImg
-1. database.txt
-1. drawing.py
-1. font
-   1. 8bit.otf
-1. ghost.py
-1. img
-1. main.py
-1. map.py
-1. player.py
-1. point.py
-1. readme.docx
-1. settings.py
-1. sound
-   1. munch\_1.wav
-   1. munch\_2.wav
-   1. pacman\_beginning.wav
-   1. pacman\_death.wav
-1. wall.py
+2. database.txt
+3. drawing.py
+4. font
+   4.1 8bit.otf
+5. ghost.py
+6. img
+7. main.py
+8. map.py
+9. player.py
+10. point.py
+11. readme.docx
+12. settings.py
+13. sound
+   13.1 munch\_1.wav
+   13.2 munch\_2.wav
+   13.3 pacman\_beginning.wav
+   13.4 pacman\_death.wav
+14. wall.py
 
 Классы программы и их краткое описание:
 
@@ -52,8 +52,7 @@
    2. Ghost – содержит класс, который содержит методы и свойства призраков
 
    3. Player– содержит класс, который содержит методы и свойства игрока
-
-   4 Point– содержит класс со свойствами точек
+   4. Point– содержит класс со свойствами точек
 
    5. Wall– содержит класс со свойствами стен
 
