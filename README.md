@@ -60,3 +60,5 @@
 
 
 Скриншот нашей программы:
+
+![pacman](https://user-images.githubusercontent.com/76534616/151671234-4e2ea16e-6985-4591-b917-4bca4c6b4e41.JPG)
