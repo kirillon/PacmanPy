@@ -7,19 +7,20 @@ from settings import *
 from drawing import Drawing
 from ghost import Ghost, ghost_sprites
 
+
 pygame.init()
 sc = pygame.display.set_mode((WIDTH, HEIGHT), pygame.DOUBLEBUF)
 clock = pygame.time.Clock()
 all_sprites = pygame.sprite.Group()
 died = 0
-win = 0
+
 gameflag = 1
 
 player = Player()
 ghost_r = Ghost(15, 14, 1/8, 0, "img/r_left_1.png", "r")
 ghost_b = Ghost(13, 17, 1/11, 4000, "img/b_left_1.png", "b")
 ghost_p = Ghost(14, 17, 1/11, 6000, "img/p_left_1.png", "p")
-ghost_o = Ghost(15, 17, 1/16, 8000, "img/o_left_1.png", "o")
+ghost_o = Ghost(15, 17, 1/12, 8000, "img/o_left_1.png", "o")
 drawing = Drawing(sc, clock, player)
 ghost_sprites.add(ghost_r, ghost_b, ghost_p, ghost_o)
 all_sprites.add(player)
@@ -31,6 +32,7 @@ pygame.mixer.music.set_volume(0.3)
 pygame.mixer.music.play()
 sc = pygame.display.set_mode((610, HEIGHT), pygame.RESIZABLE)
 build_map()
+
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -40,13 +42,16 @@ while True:
         wall_map.draw(sc)
         point_map.draw(sc)
         door_map.draw(sc)
-        
-
-
+        player.movement()
+        ghost_r.move()
+        ghost_b.move()
+        ghost_p.move()
+        ghost_o.move()
         drawing.score_viewer()
+
         if drawing.check_win():
             drawing.win()
-            win = 1
+
         elif player.check_die() and not died:
             sc.fill(BLACK)
             wall_map.draw(sc)
@@ -61,6 +66,7 @@ while True:
             pygame.mixer.music.load("sound/pacman_death.wav")
             pygame.mixer.music.play()
             died = 1
+
             for i in range(11):
                 sc.fill(BLACK)
                 wall_map.draw(sc)
@@ -74,6 +80,7 @@ while True:
                 pygame.display.flip()
                 pygame.time.delay(150)
                 clock.tick(FPS)
+
         if died:
             sc.fill(BLACK)
             wall_map.draw(sc)
@@ -84,16 +91,10 @@ while True:
             pygame.display.flip()
 
         else:
-            if not win:
-                ghost_sprites.update()
-                ghost_sprites.draw(sc)
-                player.movement()
-                all_sprites.update()
-                all_sprites.draw(sc)
-                ghost_r.move()
-                ghost_b.move()
-                ghost_p.move()
-                ghost_o.move()
+            ghost_sprites.update()
+            ghost_sprites.draw(sc)
+            all_sprites.update()
+            all_sprites.draw(sc)
             pygame.display.flip()
         clock.tick(FPS)
 

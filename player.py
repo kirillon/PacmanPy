@@ -27,7 +27,6 @@ class Player(pygame.sprite.Sprite):
         self.flag_anim = 0
 
     def movement(self):
-
         self.keys_control()
         self.check_direction()
         self.rect.center = self.x, self.y
@@ -106,7 +105,6 @@ class Player(pygame.sprite.Sprite):
             return True
 
     def keys_control(self):
-
         keys = pygame.key.get_pressed()
         if keys[pygame.K_ESCAPE]:
             exit()
@@ -130,7 +128,6 @@ class Player(pygame.sprite.Sprite):
                 exit()
 
     def collision_point(self):
-
         self.point_list = [r.rect for r in point_map]
         hit_indexes = pygame.sprite.spritecollide(self, point_map, False)
 

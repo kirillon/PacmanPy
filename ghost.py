@@ -3,6 +3,7 @@ import pygame as pg
 from map import wall_map, map_orig
 from settings import TILE, player_pos
 
+
 ghost_sprites = pg.sprite.Group()
 
 

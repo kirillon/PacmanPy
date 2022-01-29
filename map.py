@@ -4,6 +4,7 @@ from wall import Wall
 from settings import *
 from point import Point
 
+
 wall_map = pygame.sprite.Group()
 point_map = pygame.sprite.Group()
 door_map = pygame.sprite.Group()
