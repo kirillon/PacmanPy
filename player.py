@@ -5,7 +5,7 @@ from settings import *
 from ghost import ghost_sprites
 
 
-class Player(pygame.sprite.Sprite):
+class Player(pygame.sprite.Sprite):  # класс игрока
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.flag_rect = 1
@@ -27,12 +27,13 @@ class Player(pygame.sprite.Sprite):
         self.flag_anim = 0
 
     def movement(self):
+
         self.keys_control()
         self.check_direction()
         self.rect.center = self.x, self.y
         self.collision_point()
 
-    def check_direction(self):
+    def check_direction(self):  # проверка направления
         if self.next_direction is not None:
             if self.detect_collision(self.next_direction[0], self.next_direction[1]):
                 self.direction = self.next_direction
@@ -70,7 +71,7 @@ class Player(pygame.sprite.Sprite):
         if self.x > 600:
             self.x = 0
 
-    def detect_collision(self, dx, dy):
+    def detect_collision(self, dx, dy):  # проверка на столкновения со стенами
         if self.flag_rect:
             self.rectlist = [r.rect for r in wall_map]
             self.rectlist += [r.rect for r in door_map]
@@ -104,7 +105,8 @@ class Player(pygame.sprite.Sprite):
         else:
             return True
 
-    def keys_control(self):
+    def keys_control(self):  # проверка на нажатие клавиш движения
+
         keys = pygame.key.get_pressed()
         if keys[pygame.K_ESCAPE]:
             exit()
@@ -127,7 +129,8 @@ class Player(pygame.sprite.Sprite):
             if event.type == pygame.QUIT:
                 exit()
 
-    def collision_point(self):
+    def collision_point(self):  # проверка на столкновение с точками
+
         self.point_list = [r.rect for r in point_map]
         hit_indexes = pygame.sprite.spritecollide(self, point_map, False)
 
@@ -147,7 +150,7 @@ class Player(pygame.sprite.Sprite):
                         self.sound_munch_2.play()
                         self.flag_music = 0
 
-    def check_die(self):
+    def check_die(self):  # проверка на смерть
         ghostlist = [g.rect for g in ghost_sprites]
         next_rect = self.rect.copy()
         hit_indexes = next_rect.collidelistall(ghostlist)

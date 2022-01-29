@@ -7,7 +7,7 @@ from settings import TILE, player_pos
 ghost_sprites = pg.sprite.Group()
 
 
-class Ghost(pg.sprite.Sprite):
+class Ghost(pg.sprite.Sprite):  # класс призрака
     def __init__(self, x, y, speed, delay, image, color):
         pg.sprite.Sprite.__init__(self)
         self.flag_rect = 1
@@ -24,19 +24,19 @@ class Ghost(pg.sprite.Sprite):
         self.flag_anim = 0
         self.color = color
 
-    def move(self):
+    def move(self):  # класс движения
         if pg.time.get_ticks() - self.start_ticks - 4000 >= self.delay:
             self.rect.center = self.x, self.y
 
-            pozIn = (int(self.x // TILE), int(self.y // TILE))
-            pozOut = (int(player_pos[1] // TILE), int(player_pos[0] // TILE))
+            poz_in = (int(self.x // TILE), int(self.y // TILE))
+            poz_out = (int(player_pos[1] // TILE), int(player_pos[0] // TILE))
 
             path = [[0 if not x == 3 else -1 for x in y] for y in map_orig]
-            path[pozIn[1]][pozIn[0]] = 1
+            path[poz_in[1]][poz_in[0]] = 1
 
-            self.found(path, pozOut)
+            self.found(path, poz_out)
 
-            result = self.printPath(path, pozOut)
+            result = self.print_path(path, poz_out)
             if not len(result) == 0 and not type(result[0]) != tuple:
                 if self.detect_collision(result[0][0], result[0][1]):
                     self.x += result[0][0] * self.speed * TILE
@@ -86,7 +86,7 @@ class Ghost(pg.sprite.Sprite):
                             self.image = pg.image.load(f'img/{self.color}_up_2.png')
                         self.flag_anim = 0
 
-    def detect_collision(self, dx, dy):
+    def detect_collision(self, dx, dy):  # нахождения столкновений
         if self.flag_rect:
             self.rectlist = [r.rect for r in wall_map]
         next_rect = self.rect.copy()
@@ -118,44 +118,44 @@ class Ghost(pg.sprite.Sprite):
         else:
             return True
 
-    def found(self, pathArr, finPoint):
+    def found(self, path_arr, fin_point):  # волновой алгоритм поиска кратчайшего пути
         weight = 1
-        for i in range(len(pathArr) * len(pathArr[0])):
+        for i in range(len(path_arr) * len(path_arr[0])):
             weight += 1
-            for y in range(len(pathArr)):
-                for x in range(len(pathArr[y])):
-                    if pathArr[y][x] == (weight - 1):
-                        if y > 0 and pathArr[y - 1][x] == 0:
-                            pathArr[y - 1][x] = weight
-                        if y < (len(pathArr) - 1) and pathArr[y + 1][x] == 0:
-                            pathArr[y + 1][x] = weight
-                        if x > 0 and pathArr[y][x - 1] == 0:
-                            pathArr[y][x - 1] = weight
-                        if x < (len(pathArr[y]) - 1) and pathArr[y][x + 1] == 0:
-                            pathArr[y][x + 1] = weight
+            for y in range(len(path_arr)):
+                for x in range(len(path_arr[y])):
+                    if path_arr[y][x] == (weight - 1):
+                        if y > 0 and path_arr[y - 1][x] == 0:
+                            path_arr[y - 1][x] = weight
+                        if y < (len(path_arr) - 1) and path_arr[y + 1][x] == 0:
+                            path_arr[y + 1][x] = weight
+                        if x > 0 and path_arr[y][x - 1] == 0:
+                            path_arr[y][x - 1] = weight
+                        if x < (len(path_arr[y]) - 1) and path_arr[y][x + 1] == 0:
+                            path_arr[y][x + 1] = weight
 
-                        if (abs(y - finPoint[0]) + abs(x - finPoint[1])) == 1:
-                            pathArr[finPoint[0]][finPoint[1]] = weight
+                        if (abs(y - fin_point[0]) + abs(x - fin_point[1])) == 1:
+                            path_arr[fin_point[0]][fin_point[1]] = weight
                             return True
         return False
 
-    def printPath(self, pathArr, finPoint):
-        y = finPoint[0]
-        x = finPoint[1]
-        weight = pathArr[y][x]
+    def print_path(self, path_arr, fin_point):  # обработка информации из алгоритма поиска пути
+        y = fin_point[0]
+        x = fin_point[1]
+        weight = path_arr[y][x]
         result = list(range(weight))
         while weight:
             weight -= 1
-            if y > 0 and pathArr[y - 1][x] == weight:
+            if y > 0 and path_arr[y - 1][x] == weight:
                 y -= 1
                 result[weight] = (0, 1)
-            elif y < (len(pathArr) - 1) and pathArr[y + 1][x] == weight:
+            elif y < (len(path_arr) - 1) and path_arr[y + 1][x] == weight:
                 result[weight] = (0, -1)
                 y += 1
-            elif x > 0 and pathArr[y][x - 1] == weight:
+            elif x > 0 and path_arr[y][x - 1] == weight:
                 result[weight] = (1, 0)
                 x -= 1
-            elif x < (len(pathArr[y]) - 1) and pathArr[y][x + 1] == weight:
+            elif x < (len(path_arr[y]) - 1) and path_arr[y][x + 1] == weight:
                 result[weight] = (-1, 0)
                 x += 1
 

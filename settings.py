@@ -1,4 +1,4 @@
-# game settings
+# игровые настройки
 WIDTH = 1200
 HEIGHT = 800
 HALF_WIDTH = WIDTH // 2
@@ -9,11 +9,11 @@ PENTA_HEIGHT = 5 * HEIGHT
 FPS = 30
 TILE = 22
 
-# player
+# игрок
 player_pos = [HALF_WIDTH, HALF_HEIGHT]
 player_speed = 1 / 4
 
-# colors
+# цвета
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 RED = (220, 0, 0)

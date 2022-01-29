@@ -1,3 +1,4 @@
+
 import sys
 from player import Player
 from map import build_map
@@ -7,52 +8,45 @@ from settings import *
 from drawing import Drawing
 from ghost import Ghost, ghost_sprites
 
-
 pygame.init()
 sc = pygame.display.set_mode((WIDTH, HEIGHT), pygame.DOUBLEBUF)
 clock = pygame.time.Clock()
 all_sprites = pygame.sprite.Group()
 died = 0
-
+win = 0
 gameflag = 1
 
-player = Player()
-ghost_r = Ghost(15, 14, 1/8, 0, "img/r_left_1.png", "r")
-ghost_b = Ghost(13, 17, 1/11, 4000, "img/b_left_1.png", "b")
-ghost_p = Ghost(14, 17, 1/11, 6000, "img/p_left_1.png", "p")
-ghost_o = Ghost(15, 17, 1/12, 8000, "img/o_left_1.png", "o")
-drawing = Drawing(sc, clock, player)
+player = Player()  # инициализация игрока
+ghost_r = Ghost(15, 14, 1 / 8, 0, "img/r_left_1.png", "r")  # инициализация красного призрака
+ghost_b = Ghost(13, 17, 1 / 11, 4000, "img/b_left_1.png", "b")  # инициализация синего призрака
+ghost_p = Ghost(14, 17, 1 / 11, 6000, "img/p_left_1.png", "p")  # инициализация розового призрака
+ghost_o = Ghost(15, 17, 1 / 16, 8000, "img/o_left_1.png", "o")  # инициализация оранжевого призрака
+drawing = Drawing(sc, clock, player, ghost_r, ghost_b, ghost_p, ghost_o)
 ghost_sprites.add(ghost_r, ghost_b, ghost_p, ghost_o)
 all_sprites.add(player)
 
-drawing.menu()
+drawing.menu()  # вывод на экран меню
 pygame.mouse.set_visible(False)
 pygame.mixer.music.load("sound/pacman_beginning.wav")
 pygame.mixer.music.set_volume(0.3)
 pygame.mixer.music.play()
 sc = pygame.display.set_mode((610, HEIGHT), pygame.RESIZABLE)
 build_map()
-
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit(0)
-    if not gameflag:
+    if not gameflag:  # если игра началась
         sc.fill(BLACK)
         wall_map.draw(sc)
         point_map.draw(sc)
         door_map.draw(sc)
-        player.movement()
-        ghost_r.move()
-        ghost_b.move()
-        ghost_p.move()
-        ghost_o.move()
-        drawing.score_viewer()
 
+        drawing.score_viewer()
         if drawing.check_win():
             drawing.win()
-
-        elif player.check_die() and not died:
+            win = 1
+        elif player.check_die() and not died:  # проверка на смерть
             sc.fill(BLACK)
             wall_map.draw(sc)
             point_map.draw(sc)
@@ -66,7 +60,6 @@ while True:
             pygame.mixer.music.load("sound/pacman_death.wav")
             pygame.mixer.music.play()
             died = 1
-
             for i in range(11):
                 sc.fill(BLACK)
                 wall_map.draw(sc)
@@ -80,7 +73,6 @@ while True:
                 pygame.display.flip()
                 pygame.time.delay(150)
                 clock.tick(FPS)
-
         if died:
             sc.fill(BLACK)
             wall_map.draw(sc)
@@ -91,10 +83,16 @@ while True:
             pygame.display.flip()
 
         else:
-            ghost_sprites.update()
-            ghost_sprites.draw(sc)
-            all_sprites.update()
-            all_sprites.draw(sc)
+            if not win:
+                ghost_sprites.update()
+                ghost_sprites.draw(sc)
+                player.movement()
+                all_sprites.update()
+                all_sprites.draw(sc)
+                ghost_r.move()
+                ghost_b.move()
+                ghost_p.move()
+                ghost_o.move()
             pygame.display.flip()
         clock.tick(FPS)
 
