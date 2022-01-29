@@ -39,10 +39,10 @@
    11. readme.docx
    12. settings.py
    13. sound
-      13.1 munch\_1.wav
-      13.2 munch\_2.wav
-      13.3 pacman\_beginning.wav
-      13.4 pacman\_death.wav
+   13.1 munch\_1.wav
+   13.2 munch\_2.wav
+   13.3 pacman\_beginning.wav
+   13.4 pacman\_death.wav
    14. wall.py
 
 Классы программы и их краткое описание:
